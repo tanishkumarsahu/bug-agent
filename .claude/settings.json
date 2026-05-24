@@ -1,0 +1,22 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(Get-ChildItem -Path \"d:\\\\gdg\" -Recurse -Force)",
+      "Bash(Select-Object FullName, PSIsContainer)",
+      "Bash(Format-List)",
+      "Bash(npm install *)",
+      "Bash(npx playwright *)",
+      "Bash(npx tsc *)",
+      "Bash(npm run *)",
+      "Bash(netstat -ano)",
+      "Bash(findstr :3000)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:3000)",
+      "Bash(curl -s http://localhost:3000)",
+      "Bash(curl -s -X POST http://localhost:3000/api/agent/start -H \"Content-Type: application/json\" -d \"{\\\\\"repoUrl\\\\\":\\\\\"https://github.com/test/repo\\\\\",\\\\\"bugTitle\\\\\":\\\\\"test\\\\\",\\\\\"bugDescription\\\\\":\\\\\"test desc\\\\\"}\")",
+      "Bash(curl -s \"http://localhost:3000/api/agent/result?sessionId=session_1779621517816_p0h48\")"
+    ],
+    "additionalDirectories": [
+      "C:\\Users\\agraw\\.claude\\memory"
+    ]
+  }
+}
