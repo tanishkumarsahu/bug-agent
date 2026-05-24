@@ -1,0 +1,339 @@
+<!DOCTYPE html><html class="light" lang="en" style=""><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&amp;family=Inter:wght@400;500;600&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .flow-line {
+            background-image: linear-gradient(90deg, #4338ca 50%, transparent 50%);
+            background-size: 8px 1px;
+            background-repeat: repeat-x;
+        }
+        .bento-grid {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            gap: 24px;
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #f9f9ff;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #c7c4d7;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "tertiary-fixed-dim": "#ffb597",
+                        "primary-container": "#4338ca",
+                        "tertiary": "#692400",
+                        "primary-fixed-dim": "#c3c0ff",
+                        "background": "#f9f9ff",
+                        "surface-dim": "#d3daef",
+                        "outline-variant": "#c7c4d7",
+                        "on-surface": "#141b2b",
+                        "on-secondary-container": "#4c4a84",
+                        "secondary-fixed": "#e3dfff",
+                        "surface-container-highest": "#dce2f7",
+                        "primary-fixed": "#e3dfff",
+                        "secondary-container": "#c0bdff",
+                        "on-surface-variant": "#464554",
+                        "surface-variant": "#dce2f7",
+                        "surface-container-high": "#e1e8fd",
+                        "on-tertiary-container": "#ffb393",
+                        "on-tertiary-fixed": "#360f00",
+                        "secondary": "#5a5893",
+                        "primary": "#2a14b4",
+                        "on-secondary-fixed-variant": "#42407a",
+                        "on-error-container": "#93000a",
+                        "on-secondary-fixed": "#16124c",
+                        "surface-tint": "#5148d7",
+                        "on-primary-container": "#c1beff",
+                        "tertiary-container": "#8f3400",
+                        "on-secondary": "#ffffff",
+                        "inverse-surface": "#293040",
+                        "surface-container-low": "#f1f3ff",
+                        "surface": "#f9f9ff",
+                        "tertiary-fixed": "#ffdbcd",
+                        "on-primary": "#ffffff",
+                        "outline": "#777586",
+                        "on-tertiary-fixed-variant": "#7d2d00",
+                        "inverse-primary": "#c3c0ff",
+                        "on-error": "#ffffff",
+                        "on-primary-fixed-variant": "#372abf",
+                        "on-background": "#141b2b",
+                        "surface-container": "#e9edff",
+                        "secondary-fixed-dim": "#c3c0ff",
+                        "on-tertiary": "#ffffff",
+                        "error-container": "#ffdad6",
+                        "error": "#ba1a1a",
+                        "on-primary-fixed": "#100069",
+                        "inverse-on-surface": "#edf0ff",
+                        "surface-bright": "#f9f9ff",
+                        "surface-container-lowest": "#ffffff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "margin-mobile": "16px",
+                        "gutter": "24px",
+                        "margin-desktop": "40px",
+                        "unit": "4px",
+                        "container-max": "1280px"
+                    },
+                    "fontFamily": {
+                        "label-caps": ["IBM Plex Mono"],
+                        "headline-md": ["IBM Plex Mono"],
+                        "headline-lg": ["IBM Plex Mono"],
+                        "body-md": ["Inter"],
+                        "code-sm": ["IBM Plex Mono"],
+                        "body-lg": ["Inter"],
+                        "headline-sm": ["IBM Plex Mono"]
+                    },
+                    "fontSize": {
+                        "label-caps": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                        "headline-md": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                        "headline-lg": ["30px", {"lineHeight": "36px", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+                        "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                        "code-sm": ["13px", {"lineHeight": "20px", "fontWeight": "400"}],
+                        "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "headline-sm": ["18px", {"lineHeight": "24px", "fontWeight": "600"}]
+                    }
+                },
+            },
+        }
+    </script>
+</head>
+<body class="bg-surface text-on-surface font-body-md selection:bg-primary-fixed-dim selection:text-on-primary-fixed">
+<!-- TopNavBar -->
+<header class="w-full top-0 sticky bg-surface border-b-[0.5px] border-outline-variant z-50 transition-all duration-200 ease-in-out">
+<nav class="flex justify-between items-center h-16 px-margin-desktop max-w-container-max mx-auto">
+<div class="font-headline-sm text-headline-sm font-bold text-primary">BugAgent</div>
+<div class="hidden md:flex gap-8 items-center">
+<a class="text-on-surface-variant hover:text-primary transition-colors font-body-md" href="#">Home</a>
+<a class="text-primary font-bold border-b-2 border-primary pb-1 font-body-md" href="#">How it Works</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors font-body-md" href="#">Setup</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors font-body-md" href="#">Limitations</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors font-body-md" href="#">GitHub</a>
+</div>
+<button class="bg-primary-container text-on-primary-container px-6 py-2 font-label-caps hover:opacity-90 transition-opacity">Get Started</button>
+</nav>
+</header>
+<main class="max-w-container-max mx-auto px-margin-desktop py-20">
+<!-- Hero Section -->
+<section class="mb-32">
+<div class="max-w-3xl">
+<p class="font-label-caps text-label-caps text-primary mb-4 uppercase tracking-widest">The Pipeline breakdown</p>
+<h1 class="font-headline-lg text-headline-lg mb-6 leading-tight">
+                    Autonomous from issue <br>
+                    to merged pull request.
+                </h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant leading-relaxed">
+                    BugAgent doesn't just "suggest" code. It clones your repo, reproduces the failure, and iterates until the tests pass. It's high-precision engineering for lazy developers.
+                </p>
+</div>
+</section>
+<!-- Architecture Flow Diagram -->
+<section class="mb-32">
+<div class="p-8 bg-surface-container-low border-[0.5px] border-outline-variant rounded-lg overflow-x-auto custom-scrollbar">
+<div class="min-w-[1000px] flex justify-between items-center relative">
+<!-- Tech Stack Icons & Flow -->
+<div class="flex flex-col items-center gap-2 group">
+<div class="w-16 h-16 bg-surface-container-highest flex items-center justify-center border-[0.5px] border-outline-variant group-hover:border-primary transition-colors">
+<span class="material-symbols-outlined text-primary" data-icon="terminal">terminal</span>
+</div>
+<span class="font-label-caps text-label-caps">Next.js</span>
+</div>
+<div class="flex-1 mx-4 h-[1px] flow-line"></div>
+<div class="flex flex-col items-center gap-2 group">
+<div class="w-16 h-16 bg-surface-container-highest flex items-center justify-center border-[0.5px] border-outline-variant group-hover:border-primary transition-colors">
+<span class="material-symbols-outlined text-primary" data-icon="hub">hub</span>
+</div>
+<span class="font-label-caps text-label-caps">Orchestrator</span>
+</div>
+<div class="flex-1 mx-4 h-[1px] flow-line"></div>
+<div class="flex flex-col items-center gap-2 group">
+<div class="w-16 h-16 bg-surface-container-highest flex items-center justify-center border-[0.5px] border-outline-variant group-hover:border-primary transition-colors">
+<span class="material-symbols-outlined text-primary" data-icon="smart_toy">smart_toy</span>
+</div>
+<span class="font-label-caps text-label-caps">Agents</span>
+</div>
+<div class="flex-1 mx-4 h-[1px] flow-line"></div>
+<div class="grid grid-cols-2 gap-4">
+<div class="flex items-center gap-2 p-3 bg-surface-container-highest border-[0.5px] border-outline-variant">
+<span class="font-label-caps text-[10px]">CLAUDE API</span>
+</div>
+<div class="flex items-center gap-2 p-3 bg-surface-container-highest border-[0.5px] border-outline-variant">
+<span class="font-label-caps text-[10px]">PLAYWRIGHT</span>
+</div>
+<div class="flex items-center gap-2 p-3 bg-surface-container-highest border-[0.5px] border-outline-variant">
+<span class="font-label-caps text-[10px]">SIMPLE-GIT</span>
+</div>
+<div class="flex items-center gap-2 p-3 bg-surface-container-highest border-[0.5px] border-outline-variant">
+<span class="font-label-caps text-[10px]">OCTOKIT</span>
+</div>
+</div>
+</div>
+</div>
+<p class="mt-4 font-label-caps text-on-surface-variant text-center">System Architecture: Next.js -&gt; SSE -&gt; Orchestrator -&gt; Multi-Agent Cluster</p>
+</section>
+<!-- The Agents (Bento Grid Style) -->
+<section class="grid grid-cols-1 md:grid-cols-12 gap-gutter">
+<!-- Orchestrator -->
+<div class="md:col-span-8 bg-surface border-[0.5px] border-outline-variant p-8 flex flex-col justify-between group hover:border-primary transition-colors">
+<div>
+<div class="flex justify-between items-start mb-6">
+<h2 class="font-headline-md text-headline-md">Orchestrator</h2>
+<span class="material-symbols-outlined text-primary text-4xl" data-icon="leaderboard">leaderboard</span>
+</div>
+<p class="font-body-lg text-on-surface mb-4">Manages everything. Retries up to 3x. Then admits defeat.</p>
+<p class="text-on-surface-variant text-body-md">The brains of the operation. It interprets the stream, manages the session state, and handles the recursive logic when agents fail. If the pipeline hits a wall, the Orchestrator is the one to flag it for human eyes.</p>
+</div>
+<div class="mt-8 bg-surface-container-low p-4 rounded-lg">
+<code class="font-code-sm text-code-sm text-primary">retry_logic.py: max_attempts=3; status="needs_human_review"</code>
+</div>
+</div>
+<!-- BugAnalyzer -->
+<div class="md:col-span-4 bg-surface-container-low border-[0.5px] border-outline-variant p-8 group hover:border-primary transition-colors">
+<span class="material-symbols-outlined text-primary mb-6" data-icon="find_in_page">find_in_page</span>
+<h3 class="font-headline-sm text-headline-sm mb-2">BugAnalyzer</h3>
+<p class="text-on-surface-variant mb-6 italic">"Reads the ticket so you don't have to explain it twice"</p>
+<div class="w-full h-32 bg-white border-[0.5px] border-outline-variant p-4 flex flex-col gap-2 overflow-hidden">
+<div class="h-2 w-3/4 bg-surface-container-high"></div>
+<div class="h-2 w-full bg-surface-container-high"></div>
+<div class="h-2 w-1/2 bg-primary/20"></div>
+</div>
+</div>
+<!-- CodeSearch -->
+<div class="md:col-span-4 border-[0.5px] border-outline-variant p-8 flex flex-col group hover:border-primary transition-colors">
+<span class="material-symbols-outlined text-primary mb-6" data-icon="search_insights">search_insights</span>
+<h3 class="font-headline-sm text-headline-sm mb-2">CodeSearch</h3>
+<p class="text-on-surface-variant mb-4">"Clones your repo, finds the 10 most relevant files"</p>
+<p class="text-body-md text-on-surface-variant">Uses vector embeddings and semantic search to ignore the noise and focus on the logic that matters.</p>
+</div>
+<!-- RootCause -->
+<div class="md:col-span-4 border-[0.5px] border-outline-variant p-8 flex flex-col group hover:border-primary transition-colors bg-primary-container text-on-primary-container border-none">
+<span class="material-symbols-outlined mb-6" data-icon="location_searching">location_searching</span>
+<h3 class="font-headline-sm text-headline-sm mb-2">RootCause</h3>
+<p class="mb-4">"Pinpoints exact file + line range causing the bug"</p>
+<p class="text-body-md opacity-80">The forensic expert. It maps stack traces back to source code with surgical precision.</p>
+</div>
+<!-- FixGenerator -->
+<div class="md:col-span-4 border-[0.5px] border-outline-variant p-8 flex flex-col group hover:border-primary transition-colors">
+<span class="material-symbols-outlined text-primary mb-6" data-icon="terminal">terminal</span>
+<h3 class="font-headline-sm text-headline-sm mb-2">FixGenerator</h3>
+<p class="text-on-surface-variant">"Writes the patch + a Playwright test to prove it works"</p>
+<div class="mt-4 bg-surface-container-low p-2 rounded">
+<pre class="font-code-sm text-[11px] text-on-surface-variant">expect(page).toHide(errorMsg);</pre>
+</div>
+</div>
+<!-- TestRunner & Retry Logic Callout -->
+<div class="md:col-span-6 bg-surface border-[0.5px] border-outline-variant p-8 relative overflow-hidden group hover:border-primary transition-colors">
+<div class="flex items-center gap-4 mb-6">
+<span class="material-symbols-outlined text-error" data-icon="play_circle">play_circle</span>
+<h3 class="font-headline-sm text-headline-sm">TestRunner</h3>
+</div>
+<p class="text-body-lg mb-6">"Runs it in headless Chromium. Pass or retry."</p>
+<div class="p-6 bg-error-container/20 border-l-4 border-error">
+<h4 class="font-label-caps text-error mb-2">CRITICAL RETRY LOGIC</h4>
+<p class="text-body-md text-on-surface">If TestRunner fails, the error goes back to <span class="font-bold">FixGenerator</span> for another attempt. Max 3 tries before it flags <code class="bg-surface-container p-1 rounded">needs_human_review</code>.</p>
+</div>
+<span class="material-symbols-outlined absolute -bottom-8 -right-8 text-surface-container-highest text-[160px] opacity-20" data-icon="autorenew">autorenew</span>
+</div>
+<!-- PRCreator -->
+<div class="md:col-span-6 bg-surface border-[0.5px] border-outline-variant p-8 flex flex-col justify-between group hover:border-primary transition-colors">
+<div>
+<div class="flex items-center gap-4 mb-6">
+<span class="material-symbols-outlined text-primary" data-icon="merge">merge</span>
+<h3 class="font-headline-sm text-headline-sm">PRCreator</h3>
+</div>
+<p class="text-body-lg mb-4">"Commits, pushes, opens the PR. Done."</p>
+<p class="text-body-md text-on-surface-variant">The final handoff. It bundles the fix, the tests, and a detailed summary of the findings into a clean GitHub PR.</p>
+</div>
+<div class="mt-8 flex items-center gap-2">
+<div class="flex -space-x-2">
+<div class="w-8 h-8 rounded-full bg-surface-container-highest border border-surface flex items-center justify-center font-label-caps text-[10px]">BA</div>
+<div class="w-8 h-8 rounded-full bg-primary text-white border border-surface flex items-center justify-center">
+<span class="material-symbols-outlined text-sm" data-icon="person">person</span>
+</div>
+</div>
+<span class="text-label-caps opacity-60">Verified by BugAgent</span>
+</div>
+</div>
+</section>
+<!-- Visual Callout -->
+<section class="mt-32 border-t-[0.5px] border-outline-variant pt-20">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-gutter items-center">
+<div class="relative aspect-video bg-surface-container overflow-hidden group">
+<img alt="Technical Excellence" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700" data-alt="A macro close-up of high-end server hardware with glowing indigo led indicators, photographed in a bright laboratory setting with a clean minimalist aesthetic. The lighting is crisp and cool, reflecting off polished metallic surfaces. The composition emphasizes technical reliability and precision, using a palette of white, silver, and deep indigo. The mood is sophisticated, professional, and futuristic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBcz378TeJuOwSAOOCFfMVo-HgllHR7KExl_ykeNaIkz9hXR7Bc9YW4p_TWsftaF31K2ZcfLuSNo8Vejizp1eKrDgk-a9td6ZYb6eXvsVzrslDFS301V1V4f9rwBfirdAFXjqRoBb5mbFAxGxrKclyD8tou-TCE642vjQtW-C_-T4bsMOon8xTXiCtfFfdIbBE6rZxPZOKfWKoGB7hicc3ufNZvqCV9rgsKApznBCP44n8pnVfd8YybOCZ2LunnoW7JVLfjKD5F0A">
+<div class="absolute inset-0 bg-primary/10 mix-blend-multiply"></div>
+</div>
+<div class="pl-0 md:pl-12">
+<h2 class="font-headline-md text-headline-md mb-6">Built for Reliability.</h2>
+<p class="text-body-lg text-on-surface-variant mb-8 leading-relaxed">
+                        We don't believe in hallucinated solutions. By forcing every agent through a Playwright-based validation loop, we ensure that every PR we open actually solves the problem reported.
+                    </p>
+<ul class="space-y-4">
+<li class="flex items-start gap-3">
+<span class="material-symbols-outlined text-primary text-xl" data-icon="check_circle">check_circle</span>
+<span class="font-body-md">Stateless agent clusters for infinite horizontal scaling</span>
+</li>
+<li class="flex items-start gap-3">
+<span class="material-symbols-outlined text-primary text-xl" data-icon="check_circle">check_circle</span>
+<span class="font-body-md">Self-healing test loops with automatic error feedback</span>
+</li>
+<li class="flex items-start gap-3">
+<span class="material-symbols-outlined text-primary text-xl" data-icon="check_circle">check_circle</span>
+<span class="font-body-md">Zero-config integration with GitHub Actions and Vercel</span>
+</li>
+</ul>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="w-full mt-auto bg-surface border-t-[0.5px] border-outline-variant">
+<div class="flex flex-col md:flex-row justify-between items-center py-8 px-margin-desktop max-w-container-max mx-auto gap-gutter opacity-90 hover:opacity-100 transition-opacity">
+<div class="font-headline-sm text-headline-sm text-on-surface">BugAgent</div>
+<div class="flex gap-6 font-label-caps text-label-caps uppercase">
+<a class="text-on-surface-variant hover:text-primary hover:underline decoration-primary transition-colors" href="#">Home</a>
+<a class="text-primary hover:underline decoration-primary transition-colors" href="#">How it Works</a>
+<a class="text-on-surface-variant hover:text-primary hover:underline decoration-primary transition-colors" href="#">Setup</a>
+<a class="text-on-surface-variant hover:text-primary hover:underline decoration-primary transition-colors" href="#">GitHub</a>
+</div>
+
+</div>
+</footer>
+<script>
+        // Subtle micro-interactions
+        document.querySelectorAll('.group').forEach(card => {
+            card.addEventListener('mouseenter', () => {
+                const icon = card.querySelector('.material-symbols-outlined');
+                if (icon) {
+                    icon.style.transform = 'translateY(-2px)';
+                    icon.style.transition = 'transform 0.2s ease';
+                }
+            });
+            card.addEventListener('mouseleave', () => {
+                const icon = card.querySelector('.material-symbols-outlined');
+                if (icon) {
+                    icon.style.transform = 'translateY(0)';
+                }
+            });
+        });
+    </script>
+</body></html>

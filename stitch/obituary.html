@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+
+<html class="scroll-smooth" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>BugAgent — Your bug. Our PR. Your coffee.</title>
+<meta content="Autonomous bug resolution agent for public JS/TS repositories." name="description"/>
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                "surface-variant": "#dce2f7",
+                "on-background": "#141b2b",
+                "tertiary-fixed-dim": "#ffb597",
+                "surface-container": "#e9edff",
+                "primary-container": "#4338ca",
+                "secondary-fixed-dim": "#c3c0ff",
+                "tertiary": "#692400",
+                "surface-bright": "#f9f9ff",
+                "surface-container-lowest": "#ffffff",
+                "primary": "#2a14b4",
+                "outline": "#777586",
+                "on-secondary-container": "#4c4a84",
+                "on-tertiary-fixed": "#360f00",
+                "error": "#ba1a1a",
+                "tertiary-container": "#8f3400",
+                "surface-container-highest": "#dce2f7",
+                "surface": "#f9f9ff",
+                "outline-variant": "#c7c4d7",
+                "error-container": "#ffdad6",
+                "on-tertiary-fixed-variant": "#7d2d00",
+                "on-error": "#ffffff",
+                "surface-container-high": "#e1e8fd",
+                "secondary": "#5a5893",
+                "on-error-container": "#93000a",
+                "surface-dim": "#d3daef",
+                "on-surface": "#141b2b",
+                "on-primary": "#ffffff",
+                "secondary-container": "#c0bdff",
+                "on-secondary-fixed-variant": "#42407a",
+                "surface-tint": "#5148d7",
+                "on-tertiary": "#ffffff",
+                "inverse-primary": "#c3c0ff",
+                "on-primary-fixed-variant": "#372abf",
+                "primary-fixed-dim": "#c3c0ff",
+                "on-secondary-fixed": "#16124c",
+                "on-tertiary-container": "#ffb393",
+                "surface-container-low": "#f1f3ff",
+                "on-primary-container": "#c1beff",
+                "tertiary-fixed": "#ffdbcd",
+                "on-secondary": "#ffffff",
+                "on-primary-fixed": "#100069",
+                "background": "#f9f9ff",
+                "primary-fixed": "#e3dfff",
+                "on-surface-variant": "#464554",
+                "secondary-fixed": "#e3dfff",
+                "inverse-surface": "#293040",
+                "inverse-on-surface": "#edf0ff"
+            },
+            "borderRadius": {
+                "DEFAULT": "0.125rem",
+                "lg": "0.25rem",
+                "xl": "0.5rem",
+                "full": "0.75rem"
+            },
+            "spacing": {
+                "margin-mobile": "16px",
+                "gutter": "24px",
+                "margin-desktop": "40px",
+                "unit": "4px",
+                "container-max": "1280px"
+            },
+            "fontFamily": {
+                "code-sm": ["IBM Plex Mono"],
+                "body-lg": ["Inter"],
+                "label-caps": ["IBM Plex Mono"],
+                "headline-sm": ["IBM Plex Mono"],
+                "headline-lg": ["IBM Plex Mono"],
+                "body-md": ["Inter"],
+                "headline-md": ["IBM Plex Mono"]
+            },
+            "fontSize": {
+                "code-sm": ["13px", { "lineHeight": "20px", "fontWeight": "400" }],
+                "body-lg": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                "label-caps": ["12px", { "lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "500" }],
+                "headline-sm": ["18px", { "lineHeight": "24px", "fontWeight": "600" }],
+                "headline-lg": ["30px", { "lineHeight": "36px", "letterSpacing": "-0.02em", "fontWeight": "600" }],
+                "body-md": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
+                "headline-md": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600" }]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        .terminal-cursor::after {
+            content: '_';
+            animation: blink 1s step-end infinite;
+        }
+        @keyframes blink {
+            from, to { opacity: 1; }
+            50% { opacity: 0; }
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface selection:bg-primary-container selection:text-on-primary-container">
+<!-- Top Navigation -->
+<nav class="sticky top-0 z-50 bg-surface/80 backdrop-blur-md border-b border-outline-variant">
+<div class="flex justify-between items-center w-full px-margin-desktop max-w-container-max mx-auto h-16">
+<div class="font-headline-md text-headline-md font-bold text-on-surface">BugAgent</div>
+<div class="flex gap-gutter items-center">
+<div class="hidden md:flex gap-8 items-center mr-4">
+<a class="font-label-caps text-label-caps text-on-surface-variant hover:text-primary transition-colors" href="#">Obituaries</a>
+<a class="font-label-caps text-label-caps text-on-surface-variant hover:text-primary transition-colors" href="#">Terminal</a>
+<a class="font-label-caps text-label-caps text-on-surface-variant hover:text-primary transition-colors" href="#">Docs</a>
+<a class="font-label-caps text-label-caps text-on-surface-variant hover:text-primary transition-colors" href="#">Pricing</a>
+</div>
+<div class="hidden md:block h-4 w-[1px] bg-outline-variant mx-2"></div>
+<a class="flex items-center gap-2 px-4 py-2 border border-outline-variant font-label-caps text-label-caps hover:bg-surface-container-low transition-colors" href="https://github.com">
+<span class="material-symbols-outlined text-[18px]">code</span>
+                    GitHub
+                </a>
+</div>
+</div>
+</nav>
+<main>
+<!-- Hero Section -->
+<section class="min-h-[85vh] flex items-center">
+<div class="max-w-container-max mx-auto px-margin-desktop grid md:grid-cols-12 gap-12 items-center py-12 md:py-20 w-full">
+<!-- Left Side: Messaging -->
+<div class="md:col-span-7 flex flex-col justify-center">
+<div class="mb-6 font-label-caps text-label-caps text-primary tracking-widest uppercase">
+                        AUTONOMOUS BUG RESOLUTION
+                    </div>
+<h1 class="font-headline-lg text-[48px] md:text-[84px] leading-[1] font-bold text-on-surface mb-8 tracking-tighter">
+                        Your bug.<br/>Our PR.<br/>Your coffee.
+                    </h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant mb-10 max-w-xl">
+                        BugAgent clones your repo, reads the issue, finds the broken line, writes the fix, tests it in a real browser, and opens the PR. You contribute the bug report. We handle the rest.
+                    </p>
+<div class="flex flex-wrap gap-4 items-center mb-12">
+<button class="bg-primary-container text-on-primary-container px-10 py-5 font-headline-sm text-headline-sm hover:brightness-110 transition-all shadow-lg shadow-primary-container/20">
+                            Try it
+                        </button>
+<button class="px-8 py-5 font-headline-sm text-headline-sm text-primary hover:bg-surface-container-low transition-colors">
+                            How it works →
+                        </button>
+</div>
+<div class="font-body-md text-body-md text-on-surface-variant/70 italic border-l-2 border-outline-variant pl-4">
+                        Works on public JS/TS repos. No setup required beyond a GitHub token.
+                    </div>
+</div>
+<!-- Right Side: Terminal -->
+<div class="md:col-span-5">
+<div class="w-full max-w-[540px] h-[480px] bg-[#0D0D0D] rounded-xl shadow-2xl flex flex-col overflow-hidden ring-1 ring-white/10 mx-auto">
+<!-- Window Bar -->
+<div class="bg-[#1A1A1A] h-10 flex items-center px-4 gap-2 border-b border-white/5">
+<div class="w-3 h-3 rounded-full bg-[#FF5F56]"></div>
+<div class="w-3 h-3 rounded-full bg-[#FFBD2E]"></div>
+<div class="w-3 h-3 rounded-full bg-[#27C93F]"></div>
+<div class="flex-1 text-center font-label-caps text-[10px] uppercase tracking-widest text-white/40">bugagent — terminal</div>
+</div>
+<!-- Console Output -->
+<div class="p-6 font-code-sm text-code-sm text-white/90 font-mono space-y-2 overflow-y-auto" id="terminal-content">
+<span class="terminal-cursor"></span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Stat Bar -->
+<section class="bg-surface-container-low border-y border-outline-variant">
+<div class="max-w-container-max mx-auto px-margin-desktop grid grid-cols-3 divide-x divide-outline-variant">
+<div class="py-12 px-6 text-center">
+<div class="font-headline-md text-headline-md text-primary mb-2 font-bold">12k+</div>
+<div class="font-label-caps text-label-caps text-on-surface-variant uppercase tracking-wider">Agents Deployed</div>
+</div>
+<div class="py-12 px-6 text-center">
+<div class="font-headline-md text-headline-md text-primary mb-2 font-bold">94%</div>
+<div class="font-label-caps text-label-caps text-on-surface-variant uppercase tracking-wider">Success Rate</div>
+</div>
+<div class="py-12 px-6 text-center">
+<div class="font-headline-md text-headline-md text-primary mb-2 font-bold">0</div>
+<div class="font-label-caps text-label-caps text-on-surface-variant uppercase tracking-wider">Hand-Written Lines</div>
+</div>
+</div>
+</section>
+<!-- What Actually Happens Section -->
+<section class="py-32 max-w-container-max mx-auto px-margin-desktop">
+<div class="mb-24 text-center md:text-left">
+<h2 class="font-headline-lg text-headline-lg mb-4">What actually happens</h2>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-2xl">In case you were curious. Or suspicious. Here is our internal orchestration flow.</p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-12 gap-y-20 relative">
+<!-- Vertical Line (Desktop only) -->
+<div class="hidden md:block absolute left-[5.5rem] top-8 bottom-8 w-[1px] bg-outline-variant/30"></div>
+<!-- Step 01 -->
+<div class="md:col-span-12 grid md:grid-cols-12 gap-8 items-start group">
+<div class="md:col-span-2 flex justify-center md:justify-start">
+<div class="font-headline-lg text-[64px] leading-none text-on-surface/10 font-bold group-hover:text-primary/20 transition-colors">01</div>
+</div>
+<div class="md:col-span-10">
+<div class="font-label-caps text-label-caps text-primary mb-2">BugAnalyzer</div>
+<h3 class="font-headline-sm text-headline-sm mb-3">Deciphers human frustration into logical errors.</h3>
+<p class="font-body-md text-body-md text-on-surface-variant max-w-2xl">Uses Claude 3.5 Sonnet to map bug reports to specific functional requirements and potential stack traces.</p>
+</div>
+</div>
+<!-- Step 02 -->
+<div class="md:col-span-12 grid md:grid-cols-12 gap-8 items-start group">
+<div class="md:col-span-2 flex justify-center md:justify-start">
+<div class="font-headline-lg text-[64px] leading-none text-on-surface/10 font-bold group-hover:text-primary/20 transition-colors">02</div>
+</div>
+<div class="md:col-span-10">
+<div class="font-label-caps text-label-caps text-primary mb-2">CodeSearch</div>
+<h3 class="font-headline-sm text-headline-sm mb-3">Infiltrates the repository to find suspects.</h3>
+<p class="font-body-md text-body-md text-on-surface-variant max-w-2xl">Executes targeted semantic searches and explores file hierarchies using octokit and simple-git.</p>
+</div>
+</div>
+<!-- Callout Box -->
+<div class="md:col-span-10 md:col-start-3 bg-primary-container/5 border-l-4 border-primary p-10 my-4">
+<p class="font-headline-sm text-headline-sm text-on-surface">
+                        "If <span class="text-primary font-bold">TestRunner</span> fails... Max 3 tries... Even robots know when to ask for help."
+                    </p>
+</div>
+<!-- Step 03 -->
+<div class="md:col-span-12 grid md:grid-cols-12 gap-8 items-start group">
+<div class="md:col-span-2 flex justify-center md:justify-start">
+<div class="font-headline-lg text-[64px] leading-none text-on-surface/10 font-bold group-hover:text-primary/20 transition-colors">03</div>
+</div>
+<div class="md:col-span-10">
+<div class="font-label-caps text-label-caps text-primary mb-2">FixGenerator</div>
+<h3 class="font-headline-sm text-headline-sm mb-3">Drafts the technical obituary for the bug.</h3>
+<p class="font-body-md text-body-md text-on-surface-variant max-w-2xl">Writes clean, idiomatic code patches adhering to your existing repository style and linting rules.</p>
+</div>
+</div>
+<!-- Step 04 -->
+<div class="md:col-span-12 grid md:grid-cols-12 gap-8 items-start group">
+<div class="md:col-span-2 flex justify-center md:justify-start">
+<div class="font-headline-lg text-[64px] leading-none text-on-surface/10 font-bold group-hover:text-primary/20 transition-colors">04</div>
+</div>
+<div class="md:col-span-10">
+<div class="font-label-caps text-label-caps text-primary mb-2">PRCreator</div>
+<h3 class="font-headline-sm text-headline-sm mb-3">Submits the final report for review.</h3>
+<p class="font-body-md text-body-md text-on-surface-variant max-w-2xl">Opens a GitHub Pull Request with a detailed summary of the fix, test results, and a small joke about Javascript.</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Tech Stack Section -->
+<section class="py-32 border-t border-outline-variant bg-surface-container-lowest">
+<div class="max-w-container-max mx-auto px-margin-desktop">
+<div class="mb-16 font-label-caps text-label-caps text-on-surface-variant uppercase tracking-[0.2em] font-semibold text-center">Integrated with the best</div>
+<div class="grid grid-cols-2 md:grid-cols-4 gap-12">
+<div class="flex flex-col gap-3 group">
+<div class="h-1 w-8 bg-primary/20 group-hover:w-full transition-all duration-500"></div>
+<div class="font-headline-sm text-headline-sm">Claude Sonnet</div>
+<div class="font-body-md text-body-md text-on-surface-variant">The Reasoning Engine</div>
+</div>
+<div class="flex flex-col gap-3 group">
+<div class="h-1 w-8 bg-primary/20 group-hover:w-full transition-all duration-500"></div>
+<div class="font-headline-sm text-headline-sm">Playwright</div>
+<div class="font-body-md text-body-md text-on-surface-variant">Browser Verification</div>
+</div>
+<div class="flex flex-col gap-3 group">
+<div class="h-1 w-8 bg-primary/20 group-hover:w-full transition-all duration-500"></div>
+<div class="font-headline-sm text-headline-sm">Octokit</div>
+<div class="font-body-md text-body-md text-on-surface-variant">GitHub API Proxy</div>
+</div>
+<div class="flex flex-col gap-3 group">
+<div class="h-1 w-8 bg-primary/20 group-hover:w-full transition-all duration-500"></div>
+<div class="font-headline-sm text-headline-sm">Simple-git</div>
+<div class="font-body-md text-body-md text-on-surface-variant">Repo Manipulation</div>
+</div>
+<div class="flex flex-col gap-3 group">
+<div class="h-1 w-8 bg-primary/20 group-hover:w-full transition-all duration-500"></div>
+<div class="font-headline-sm text-headline-sm">SSE</div>
+<div class="font-body-md text-body-md text-on-surface-variant">Real-time Terminal</div>
+</div>
+<div class="flex flex-col gap-3 group">
+<div class="h-1 w-8 bg-primary/20 group-hover:w-full transition-all duration-500"></div>
+<div class="font-headline-sm text-headline-sm">Next.js 14</div>
+<div class="font-body-md text-body-md text-on-surface-variant">Application Core</div>
+</div>
+<div class="flex flex-col gap-3 group">
+<div class="h-1 w-8 bg-primary/20 group-hover:w-full transition-all duration-500"></div>
+<div class="font-headline-sm text-headline-sm">Tailwind CSS</div>
+<div class="font-body-md text-body-md text-on-surface-variant">UI Utility Layer</div>
+</div>
+<div class="flex flex-col gap-3 group">
+<div class="h-1 w-8 bg-primary/20 group-hover:w-full transition-all duration-500"></div>
+<div class="font-headline-sm text-headline-sm">PostgreSQL</div>
+<div class="font-body-md text-body-md text-on-surface-variant">Job History Storage</div>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="bg-surface border-t border-outline-variant py-20">
+<div class="max-w-container-max mx-auto px-margin-desktop flex flex-col md:flex-row justify-between items-start gap-12">
+<div class="max-w-sm">
+<div class="font-headline-md text-headline-md font-bold text-on-surface mb-4">BugAgent</div>
+<p class="font-body-md text-body-md text-on-surface-variant mb-6">
+                    Automating the mundane so you can focus on the meaningful. Developed for developers, by developers.
+                </p>
+<div class="font-label-caps text-label-caps text-on-surface-variant/60">© 2024 BugAgent Inc.</div>
+</div>
+<div class="grid grid-cols-2 md:grid-cols-3 gap-16">
+<div>
+<h4 class="font-label-caps text-label-caps text-on-surface font-bold mb-6">Product</h4>
+<ul class="space-y-3">
+<li><a class="font-body-md text-body-md text-on-surface-variant hover:text-primary" href="#">Terminal</a></li>
+<li><a class="font-body-md text-body-md text-on-surface-variant hover:text-primary" href="#">Docs</a></li>
+<li><a class="font-body-md text-body-md text-on-surface-variant hover:text-primary" href="#">Pricing</a></li>
+</ul>
+</div>
+<div>
+<h4 class="font-label-caps text-label-caps text-on-surface font-bold mb-6">Social</h4>
+<ul class="space-y-3">
+<li><a class="font-body-md text-body-md text-on-surface-variant hover:text-primary" href="#">GitHub</a></li>
+<li><a class="font-body-md text-body-md text-on-surface-variant hover:text-primary" href="#">Twitter</a></li>
+<li><a class="font-body-md text-body-md text-on-surface-variant hover:text-primary" href="#">LinkedIn</a></li>
+</ul>
+</div>
+<div class="col-span-2 md:col-span-1">
+<h4 class="font-label-caps text-label-caps text-on-surface font-bold mb-6">Legal</h4>
+<ul class="space-y-3">
+<li><a class="font-body-md text-body-md text-on-surface-variant hover:text-primary" href="#">Privacy</a></li>
+<li><a class="font-body-md text-body-md text-on-surface-variant hover:text-primary" href="#">Terms</a></li>
+</ul>
+</div>
+</div>
+</div>
+</footer>
+<script>
+        const terminalLines = [
+            { text: "[10:42:01] ", color: "text-white/40" },
+            { text: "BugAnalyzer → ", color: "text-primary-container" },
+            { text: "parsing issue #88...\n", color: "text-white" },
+            
+            { text: "[10:42:02] ", color: "text-white/40" },
+            { text: "CodeSearch → ", color: "text-primary-container" },
+            { text: "cloning repo (23MB)...\n", color: "text-white" },
+            
+            { text: "[10:42:04] ", color: "text-white/40" },
+            { text: "CodeSearch → ", color: "text-primary-container" },
+            { text: "found 8 relevant files\n", color: "text-white" },
+            
+            { text: "[10:42:07] ", color: "text-white/40" },
+            { text: "RootCause → ", color: "text-primary-container" },
+            { text: "src/components/Button.tsx:114\n", color: "text-white" },
+            
+            { text: "[10:42:09] ", color: "text-white/40" },
+            { text: "FixGenerator → ", color: "text-primary-container" },
+            { text: "writing patch...\n", color: "text-white" },
+            
+            { text: "[10:42:12] ", color: "text-white/40" },
+            { text: "TestRunner → ", color: "text-primary-container" },
+            { text: "running playwright (attempt 1)...\n", color: "text-white" },
+            
+            { text: "[10:42:18] ", color: "text-white/40" },
+            { text: "TestRunner ✓ ", color: "text-green-400" },
+            { text: "all tests passed\n", color: "text-white" },
+            
+            { text: "[10:42:19] ", color: "text-white/40" },
+            { text: "PRCreator → ", color: "text-primary-container" },
+            { text: "opening PR #89...\n", color: "text-white" },
+            
+            { text: "[10:42:20] ──────────────────────────────────────\n", color: "text-white/20" },
+            
+            { text: "[10:42:20] ", color: "text-white/40" },
+            { text: "github.com/user/repo/pull/89 ", color: "text-white" },
+            { text: "← done", color: "text-primary-container" }
+        ];
+
+        const terminalEl = document.getElementById('terminal-content');
+        let currentLine = 0;
+        let currentChar = 0;
+
+        function typeWriter() {
+            if (currentLine < terminalLines.length) {
+                const lineData = terminalLines[currentLine];
+                const lineSpan = document.createElement('span');
+                lineSpan.className = lineData.color;
+                
+                const cursor = terminalEl.querySelector('.terminal-cursor');
+                terminalEl.insertBefore(lineSpan, cursor);
+
+                function typeChar() {
+                    if (currentChar < lineData.text.length) {
+                        lineSpan.textContent += lineData.text.charAt(currentChar);
+                        currentChar++;
+                        setTimeout(typeChar, 20);
+                    } else {
+                        currentChar = 0;
+                        currentLine++;
+                        let delay = lineData.text.includes('\n') ? 400 : 0;
+                        setTimeout(typeWriter, delay);
+                    }
+                    terminalEl.scrollTop = terminalEl.scrollHeight;
+                }
+                typeChar();
+            }
+        }
+
+        window.addEventListener('load', () => {
+            setTimeout(typeWriter, 1000);
+        });
+    </script>
+</body></html>
