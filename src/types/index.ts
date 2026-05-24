@@ -76,3 +76,34 @@ export interface Session {
   events: AgentEvent[]
   createdAt: number
 }
+
+export type MonitorSource = 'github-issues' | 'reddit' | 'stackoverflow'
+
+export interface WatchConfig {
+  id: string
+  source: MonitorSource
+  label: string
+  repoUrl?: string        // GitHub Issues: repo to watch
+  subreddit?: string      // Reddit: subreddit to scan
+  tags?: string[]         // Stack Overflow: tags to watch
+  targetRepoUrl?: string  // Reddit/SO: repo to fix bugs in
+  keyword?: string        // Package name or keyword filter
+  active: boolean
+  lastCheckedAt: number
+  seenIds: string[]
+  autoSessionIds: string[]
+  createdAt: number
+}
+
+export interface DetectedBug {
+  id: string
+  watchId: string
+  sourceId: string
+  source: MonitorSource
+  title: string
+  description: string
+  repoUrl: string
+  sourceUrl: string
+  detectedAt: number
+  sessionId?: string
+}
