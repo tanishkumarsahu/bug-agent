@@ -8,12 +8,14 @@
 ![iii Engine](https://img.shields.io/badge/iii-Engine-black?style=flat-square)
 ![License](https://img.shields.io/badge/License-MIT-green?style=flat-square)
 
-BugAgent is a **fully autonomous multi-agent AI system** that takes a GitHub repository URL and a plain-English bug report — then independently analyzes the codebase, identifies the root cause, writes a surgical fix, and opens a Pull Request. No manual triage. No context switching. No human in the loop.
+BugAgent is a **fully autonomous multi-agent AI system** designed for end-to-end automated bug resolution in codebases. BugAgent embodies the agentic architecture at its core: it takes a GitHub repository URL and a plain-English bug report, then independently analyzes the codebase, identifies the root cause, writes a surgical fix, and opens a Pull Request. No manual triage. No context switching. No human in the loop.
 
 ---
 
 ## Table of Contents
 
+- [What Did We Intend to Make](#what-did-we-intend-to-make)
+- [Why BugAgent](#why-bugagent)
 - [Problem Statement](#problem-statement)
 - [Demo](#demo)
 - [How It Works](#how-it-works)
@@ -26,6 +28,22 @@ BugAgent is a **fully autonomous multi-agent AI system** that takes a GitHub rep
 - [Project Structure](#project-structure)
 - [Current Scope](#current-scope-v1)
 - [Roadmap](#roadmap-v2)
+
+---
+
+## What Did We Intend to Make
+
+BugAgent is a fully autonomous multi-agent AI system that eliminates the manual bug-to-PR workflow entirely. The intent was to build an agentic pipeline that accepts a plain-English bug report and a GitHub repository URL, then without any human involvement — analyzes the codebase, identifies the root cause, generates a surgical code fix, and opens a ready-to-merge Pull Request. The goal was not to assist developers, but to fully replace the most repetitive, high-cost workflow in software development — end to end, autonomously, in under a minute.
+
+---
+
+## Why BugAgent
+
+Every developer knows the drill — a bug comes in, you context-switch, spend 40 minutes reading unfamiliar code, write a fix, open a PR, and repeat. For small teams, this isn't just annoying — it's a velocity killer.
+
+We built BugAgent because bug resolution is the most repetitive, high-cost, low-creativity task in software development. It follows a pattern every single time. And anything that follows a pattern can be automated.
+
+BugAgent doesn't assist developers. It replaces the entire bug-to-PR workflow — autonomously, end-to-end, in under a minute.
 
 ---
 
@@ -64,7 +82,7 @@ BugAgent runs a sequential multi-agent pipeline where each agent has a single re
 2. **BugAnalyzerAgent** — Parses the free-text bug report into a structured context object (affected area, expected vs actual behavior, severity signals)
 3. **CodeSearchAgent** — Clones the repository locally and uses semantic search to surface the top 10 most relevant files to the reported bug
 4. **RootCauseAgent** — Analyzes the shortlisted files and identifies the exact file, function, and line range responsible for the bug using OpenAI's reasoning capability via the iii Engine
-5. **FixGeneratorAgent** — Generates a targeted, minimal code fix for the identified root cause — no unnecessary changes, surgical precision only
+5. **FixGeneratorAgent** — Generates a targeted, minimal code fix for the identified root cause via OpenAI — no unnecessary changes, surgical precision only
 6. **PRCreatorAgent** — Creates a new Git branch, commits the fix with a descriptive message, and opens a GitHub Pull Request via Octokit
 7. **Live Streaming** — Every step above streams in real-time to the frontend via Server-Sent Events (SSE), giving full visibility into the agent's reasoning
 
@@ -99,7 +117,7 @@ BugAgent runs a sequential multi-agent pipeline where each agent has a single re
 | `BugAnalyzerAgent` | Parses bug report into structured context | Structured bug object |
 | `CodeSearchAgent` | Clones repo, surfaces top 10 relevant files | File list with relevance scores |
 | `RootCauseAgent` | Identifies exact file + line range causing the bug | Root cause report |
-| `FixGeneratorAgent` | Generates targeted surgical code fix | Patched file content |
+| `FixGeneratorAgent` | Generates targeted surgical code fix via OpenAI | Patched file content |
 | `PRCreatorAgent` | Creates branch, commits fix, opens GitHub PR | Pull Request URL |
 
 ---
@@ -203,7 +221,7 @@ bug-agent/
 │   ├── tools/
 │   │   ├── github.ts                   # Octokit wrapper
 │   │   ├── filesystem.ts               # Repo + file operations
-│   │   └── openai.ts                    # OpenAI API wrapper
+│   │   └── openai.ts                   # OpenAI API wrapper
 │   ├── types/
 │   │   └── index.ts                    # Shared TypeScript types
 │   └── store/
@@ -245,3 +263,4 @@ MIT © 2026 BugAgent
 
 ---
 
+> *Autonomous. Agentic. Zero human involvement.*

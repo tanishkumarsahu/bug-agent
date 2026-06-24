@@ -1,4 +1,4 @@
-import { callClaude } from '@/tools/claude'
+import { callClaude, parseJson } from '@/tools/claude'
 import { BugContext, RelevantFile, RootCause } from '@/types'
 
 export async function runRootCause(bugContext: BugContext, files: RelevantFile[]): Promise<RootCause> {
@@ -22,5 +22,20 @@ Identify the root cause. Return:
 }`
 
   const raw = await callClaude(system, user)
-  return JSON.parse(raw.replace(/```json|```/g, '').trim()) as RootCause
+  const rootCause = parseJson<RootCause>(raw)
+
+  // The model can return a path that isn't one of the files we gave it.
+  // Snap it back to a real file so downstream steps don't try to open a
+  // non-existent path (the classic "N/A - Code not provided" crash).
+  const norm = (p: string) => p.replace(/\\/g, '/').toLowerCase()
+  const match = files.find(f => norm(f.path) === norm(rootCause.file))
+    || files.find(f => norm(f.path).endsWith(norm(rootCause.file)))
+  if (!match) {
+    rootCause.file = files[0].path
+    rootCause.confidence = 'low'
+  } else {
+    rootCause.file = match.path
+  }
+
+  return rootCause
 }

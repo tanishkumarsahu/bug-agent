@@ -1,3 +1,50 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+  body {
+    background-color: #ffffff;
+    color: #141b2b;
+    font-family: 'Inter', sans-serif;
+  }
+}
+
+/* Dotted architecture connection line */
+.flow-line {
+  background-image: linear-gradient(90deg, #4338ca 50%, transparent 50%);
+  background-size: 8px 1px;
+  background-repeat: repeat-x;
+}
+
+/* Custom technical scrollbars */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: #f9f9ff;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #c7c4d7;
+  border-radius: 2px;
+}
+
+/* Terminal cursor blinking */
+.terminal-cursor::after {
+  content: '_';
+  animation: blink 1s step-end infinite;
+}
+
+@keyframes blink {
+  from, to { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+/* Technical 0.5px dividers */
+.divider-h {
+  border-bottom: 0.5px solid #E5E7EB;
+}
+.divider-v {
+  border-right: 0.5px solid #E5E7EB;
+}

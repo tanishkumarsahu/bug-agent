@@ -8,7 +8,9 @@ import { cloneRepo } from '@/tools/filesystem'
 import { addEvent, updateSession, getSession } from '@/store/sessions'
 import { AgentName } from '@/types'
 
-const MAX_ATTEMPTS = 3
+// Each attempt calls the model again; free-tier daily quota is scarce, so
+// keep this low. 2 is enough to demonstrate the retry-with-feedback loop.
+const MAX_ATTEMPTS = 2
 
 function emit(sessionId: string, agent: AgentName, status: 'running' | 'done' | 'failed' | 'retrying', message: string) {
   addEvent(sessionId, { agent, status, message })
@@ -32,6 +34,12 @@ export async function runOrchestrator(sessionId: string): Promise<void> {
     emit(sessionId, 'CodeSearchAgent', 'running', 'Scanning codebase for relevant files...')
     const relevantFiles = await runCodeSearch(repoLocalPath, bugContext)
     updateSession(sessionId, { relevantFiles })
+
+    if (relevantFiles.length === 0) {
+      emit(sessionId, 'CodeSearchAgent', 'failed', 'No relevant code files found in the repository for this bug. Cannot diagnose without code.')
+      updateSession(sessionId, { status: 'failed' })
+      return
+    }
     emit(sessionId, 'CodeSearchAgent', 'done', `Found ${relevantFiles.length} relevant files`)
 
     // Step 3: Root cause
@@ -62,6 +70,13 @@ export async function runOrchestrator(sessionId: string): Promise<void> {
       emit(sessionId, 'TestRunnerAgent', 'running', `Running Playwright tests in Chromium (attempt ${attempt})...`)
       testResult = await runTestRunner(repoLocalPath)
       updateSession(sessionId, { testResult })
+
+      if (testResult.skipped) {
+        // No runnable tests in this repo — retrying won't help, so stop the
+        // loop and raise a PR for human review instead of wasting attempts.
+        emit(sessionId, 'TestRunnerAgent', 'done', 'No runnable tests in repo — skipping validation, raising PR for human review.')
+        break
+      }
 
       if (testResult.passed) {
         testPassed = true

@@ -1,4 +1,4 @@
-import { callClaude } from '@/tools/claude'
+import { callClaude, parseJson } from '@/tools/claude'
 import { RootCause, FixResult, BugContext } from '@/types'
 import { readFile, writeFile } from '@/tools/filesystem'
 
@@ -32,16 +32,33 @@ Return:
 }`
 
   const raw = await callClaude(system, user)
-  const result = JSON.parse(raw.replace(/```json|```/g, '').trim())
+  const result = parseJson<{
+    fixedFileContent?: string
+    testFileContent?: string
+    testFileName?: string
+    diffSummary?: string
+  }>(raw)
 
+  // The fix itself is required — without it there's nothing to apply.
+  if (typeof result.fixedFileContent !== 'string' || result.fixedFileContent.trim() === '') {
+    throw new Error('Fix generator: model response did not include "fixedFileContent".')
+  }
   writeFile(repoPath, rootCause.file, result.fixedFileContent)
-  writeFile(repoPath, result.testFileName, result.testFileContent)
+
+  // The test file is optional — the model sometimes omits it (especially on a
+  // retry). Only write it when both name and content are valid strings.
+  const hasTest =
+    typeof result.testFileName === 'string' && result.testFileName.trim() !== '' &&
+    typeof result.testFileContent === 'string' && result.testFileContent.trim() !== ''
+  if (hasTest) {
+    writeFile(repoPath, result.testFileName!, result.testFileContent!)
+  }
 
   return {
     fixedFilePath: rootCause.file,
     fixedFileContent: result.fixedFileContent,
-    testFilePath: result.testFileName,
-    testFileContent: result.testFileContent,
-    diffSummary: result.diffSummary,
+    testFilePath: hasTest ? result.testFileName! : '',
+    testFileContent: hasTest ? result.testFileContent! : '',
+    diffSummary: result.diffSummary ?? 'Applied a targeted fix.',
   }
 }

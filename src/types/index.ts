@@ -57,6 +57,7 @@ export interface TestResult {
   passed: boolean
   output: string
   errorDetails?: string
+  skipped?: boolean   // true when the repo has no runnable test setup
 }
 
 export interface Session {

@@ -1,4 +1,4 @@
-import { callClaude } from '@/tools/claude'
+import { callClaude, parseJson } from '@/tools/claude'
 import { BugContext } from '@/types'
 
 export async function runBugAnalyzer(title: string, description: string): Promise<BugContext> {
@@ -20,5 +20,5 @@ Respond with this exact JSON structure:
 }`
 
   const raw = await callClaude(system, user)
-  return JSON.parse(raw.replace(/```json|```/g, '').trim()) as BugContext
+  return parseJson<BugContext>(raw)
 }
